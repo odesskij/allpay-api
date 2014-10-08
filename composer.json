@@ -1,0 +1,15 @@
+{
+    "name":        "allpay/allpay",
+    "description": "Allpay API library",
+    "type":        "library",
+    "license":     "GPLv3",
+    "authors":     [
+        {
+            "name":  "Vladimir Odesskij",
+            "email": "odesskij1992@gmail.com"
+        }
+    ],
+    "require":     {
+        "guzzle/guzzle": "~3.9"
+    }
+}
