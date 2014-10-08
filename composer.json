@@ -9,6 +9,11 @@
             "email": "odesskij1992@gmail.com"
         }
     ],
+    "autoload":    {
+        "psr-4": {
+            "Allpay\\": "src/"
+        }
+    },
     "require":     {
         "guzzle/guzzle": "~3.9"
     }
