@@ -26,3 +26,9 @@ var_dump($api->api('prepayment', [
         'game.botva.server' => 'server1'
     ]
 ]));
+
+//$a = '8dbce70784f54527422272edd777ff9e7f09903c';
+//
+//var_dump($api->api('payment', [
+//    'hash' => $a,
+//]));
