@@ -53,12 +53,13 @@ class Api
      */
     protected function request($action, $data)
     {
+        $data = json_encode($data);
         $client = new Client(static::HOST);
         $request = $client->post('/action', null,
             ['action'    => $action,
              'data'      => $data,
              'key'       => $this->key,
-             'signature' => hash('sha256', $this->secret)
+             'signature' => hash('sha256', $data . $this->secret)
             ], ['verify' => false]);
 
         $response = $request->send();
