@@ -34,12 +34,15 @@ class Api
     /**
      * @param string $action
      * @param array $data
+     * @throws ApiException
      * @return array
      */
     public function api($action, array $data = null)
     {
         $response = $this->request($action, $data ? $data : []);
-        var_dump($response);
+        if ($response['error'] === true) {
+            throw new ApiException($response);
+        }
         return $response;
     }
 
