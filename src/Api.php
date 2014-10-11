@@ -31,6 +31,66 @@ class Api
         $this->secret = $secret;
     }
 
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    public function signature(array $data)
+    {
+        return hash('sha256', json_encode($data) . $this->secret);
+    }
+
+    /**
+     * @return array
+     */
+    public function getPurses()
+    {
+        return $this->api('purses-list');
+    }
+
+    /**
+     * @param string $endpoint Id
+     * @return array
+     */
+    public function getEndpoint($endpoint)
+    {
+        return $this->api('endpoint-info', [
+            'endpoint' => $endpoint
+        ]);
+    }
+
+    public function getEndpoints()
+    {
+        return $this->api('endpoints-list');
+    }
+
+    /**
+     * @param string $endpoint
+     * @param string $purse
+     * @param array $atoms
+     * @return array
+     */
+    public function prepayment($endpoint, $purse, array $atoms)
+    {
+        return $this->api('prepayment', [
+            'endpoint' => $endpoint,
+            'purse'    => $purse,
+            'atoms'    => $atoms
+        ]);
+    }
+
+    /**
+     * @param string $hash operation hash
+     * @return array
+     */
+    public function payment($hash)
+    {
+        return $this->api('payment', [
+            'hash' => $hash,
+        ]);
+    }
+
     /**
      * @param string $action
      * @param array $data
@@ -40,7 +100,7 @@ class Api
     public function api($action, array $data = null)
     {
         $response = $this->request($action, $data ? $data : []);
-        if ($response['error'] === true) {
+        if (isset($response['error']) && $response['error'] === true) {
             throw new ApiException($response);
         }
         return $response;
@@ -53,13 +113,13 @@ class Api
      */
     protected function request($action, $data)
     {
-        $data = json_encode($data);
+
         $client = new Client(static::HOST);
         $request = $client->post('/action', null,
             ['action'    => $action,
-             'data'      => $data,
+             'data'      => json_encode($data),
              'key'       => $this->key,
-             'signature' => hash('sha256', $data . $this->secret)
+             'signature' => $this->signature($data)
             ], ['verify' => false]);
 
         $response = $request->send();
