@@ -10,7 +10,7 @@ use Guzzle\Service\Client;
  */
 class Api
 {
-    CONST HOST = 'https://allpay.test';
+    CONST HOST = 'https://allpay.ru';
     /**
      * @var string
      */
@@ -120,7 +120,7 @@ class Api
              'data'      => json_encode($data),
              'key'       => $this->key,
              'signature' => $this->signature($data)
-            ], ['verify' => false]);
+            ]);
 
         $response = $request->send();
         return json_decode($response->getBody(true), true);
